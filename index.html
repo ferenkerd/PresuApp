@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto Profesional - U.R.I Urgencias Reformas e Instalaciones</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter y Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --uri-navy: #14284B;
+            --uri-orange: #E87A24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #CBD5E1;
+            margin: 0;
+            padding: 0;
+            color: #111827;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            max-height: 297mm;
+            background: #FFFFFF;
+            margin: 24px auto;
+            padding: 12mm 14mm;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .editable-line {
+            border: none;
+            border-bottom: 1px solid #374151;
+            background: transparent;
+            outline: none;
+            font-family: inherit;
+            color: #111827;
+            padding: 0 4px;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+
+        .editable-line:focus {
+            background-color: rgba(232, 122, 36, 0.08);
+            border-bottom-color: var(--uri-orange);
+        }
+
+        .items-wrapper {
+            position: relative;
+            border: 1.5px solid var(--uri-orange);
+            border-radius: 6px;
+            overflow: hidden;
+            height: 310px;
+            min-height: 310px;
+            max-height: 310px;
+            display: flex;
+            flex-direction: column;
+            background-color: #FFFFFF;
+        }
+
+        .watermark-layer {
+            position: absolute;
+            top: 36px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.10;
+        }
+
+        .table-grid {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .table-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--uri-navy);
+            color: #FFFFFF;
+            display: grid;
+            grid-template-columns: 1fr 78px 108px 98px;
+            font-weight: 700;
+            font-size: 12px;
+            border-bottom: 1.5px solid var(--uri-orange);
+            flex-shrink: 0;
+        }
+
+        .table-header>div {
+            padding: 6px 10px;
+            text-align: center;
+        }
+
+        .table-header>div:not(:last-child) {
+            border-right: 1.5px solid var(--uri-orange);
+        }
+
+        .vertical-guides {
+            position: absolute;
+            top: 32px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: 1fr 78px 108px 98px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .vertical-guides>div:not(:last-child) {
+            border-right: 1.5px solid var(--uri-orange);
+        }
+
+        .table-body-container {
+            position: relative;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 3;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(20, 40, 75, 0.35) rgba(241, 245, 249, 0.5);
+        }
+
+        .table-body-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .table-body-container::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.4);
+        }
+
+        .table-body-container::-webkit-scrollbar-thumb {
+            background-color: rgba(20, 40, 75, 0.32);
+            border-radius: 9999px;
+        }
+
+        .table-body-container::-webkit-scrollbar-thumb:hover {
+            background-color: var(--uri-orange);
+        }
+
+        .item-row {
+            position: relative;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: 1fr 78px 108px 98px;
+            border-bottom: 1px dashed rgba(232, 122, 36, 0.28);
+            transition: background-color 0.15s;
+            flex-shrink: 0;
+        }
+
+        .item-row:hover {
+            background-color: rgba(20, 40, 75, 0.03);
+        }
+
+        .item-row:hover .row-delete-btn {
+            opacity: 1;
+        }
+
+        .row-delete-btn {
+            opacity: 0;
+            position: absolute;
+            left: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #EF4444;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.15s, transform 0.15s;
+            z-index: 10;
+        }
+
+        .row-delete-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .cell-textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+            font-size: 12px;
+            line-height: 1.35;
+            padding: 5px 8px 5px 22px;
+            color: #111827;
+            overflow: hidden;
+        }
+
+        .cell-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 12px;
+            padding: 5px 6px;
+            text-align: right;
+            color: #111827;
+        }
+
+        .cell-input-center {
+            text-align: center;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: 1fr 98px;
+            width: 284px;
+            margin-left: auto;
+            border: 1.5px solid var(--uri-navy);
+            background: #FFFFFF;
+            border-radius: 6px;
+        }
+
+        .totals-row-label {
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: right;
+            color: #111827;
+            border-right: 1.5px solid var(--uri-orange);
+            border-bottom: 1.5px solid var(--uri-navy);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 2px;
+        }
+
+        .totals-row-value {
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: right;
+            color: #111827;
+            border-bottom: 1.5px solid var(--uri-orange);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .totals-final-label {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            text-align: right;
+            color: #111827;
+            border-right: 1.5px solid var(--uri-orange);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .totals-final-value {
+            padding: 6px 10px;
+            font-size: 13px;
+            font-weight: 800;
+            text-align: right;
+            background-color: var(--uri-navy);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .lined-notes {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+            font-size: 11.5px;
+            line-height: 20px;
+            color: #111827;
+            background-color: transparent;
+            background-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 19px, #4B5563 19px, #4B5563 20px);
+            padding: 0 2px;
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: var(--uri-navy);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--uri-orange);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 100;
+            transform: translateY(120%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media screen and (max-width: 820px) {
+            .a4-scroll-wrapper {
+                overflow-x: auto;
+                padding: 12px;
+            }
+
+            .a4-page {
+                margin: 0 auto;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            html,
+            body {
+                width: 210mm;
+                height: 297mm;
+                background: #FFFFFF !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .a4-scroll-wrapper {
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            .a4-page {
+                margin: 0 !important;
+                box-shadow: none !important;
+                width: 210mm !important;
+                height: auto !important;
+                min-height: 297mm !important;
+                max-height: none !important;
+                padding: 11mm 14mm !important;
+                overflow: visible !important;
+            }
+
+            .editable-line:focus,
+            input[type="date"]:focus {
+                background-color: transparent !important;
+            }
+
+            /* ✅ CAMBIO CLAVE: La tabla mantiene altura mínima de 310px al imprimir */
+            .items-wrapper {
+                min-height: 310px !important;
+                /* Antes era auto, ahora fuerza tamaño mínimo */
+                height: auto !important;
+                /* Pero puede crecer si hay muchos ítems */
+                max-height: none !important;
+                overflow: visible !important;
+                border: 1.5px solid var(--uri-orange);
+            }
+
+            /* ✅ CAMBIO CLAVE: El cuerpo de la tabla también mantiene altura mínima */
+            .table-body-container {
+                min-height: 270px !important;
+                /* Antes era auto, ahora fuerza tamaño mínimo */
+                overflow: visible !important;
+                flex: none;
+            }
+
+            .item-row {
+                page-break-inside: avoid;
+            }
+
+            .table-body-container::-webkit-scrollbar {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- BARRA SUPERIOR DE HERRAMIENTAS -->
+    <header class="no-print sticky top-0 z-50 bg-[#14284B] text-white border-b-2 border-[#E87A24] shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+
+            <!-- Logo y Título -->
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <div
+                    class="h-11 w-11 bg-white rounded-md flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm">
+                    <svg viewBox="60 0 180 135" class="h-full w-auto max-w-full" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M98 20 L185 20 L180 23.5 L94 23.5 Z" fill="#14284B"></path>
+                        <path d="M82 28 L175 28 L170 31.5 L78 31.5 Z" fill="#14284B"></path>
+                        <path d="M108 36 L168 36 L163 39 L104 39 Z" fill="#14284B"></path>
+                        <g transform="translate(154, 6)">
+                            <path d="M8 38 L44 17 L48 25 L12 46 Z" fill="#E87A24"></path>
+                            <path
+                                d="M40 12 C46 5, 58 4, 65 9 L53 16 L56 22 L68 15 C70 23, 64 33, 54 35 C47 36, 41 33, 38 28 L35 19 Z"
+                                fill="#E87A24"></path>
+                        </g>
+                        <text x="150" y="96" text-anchor="middle" font-family="'Montserrat', sans-serif"
+                            font-weight="900" font-style="italic" font-size="68" letter-spacing="-2">
+                            <tspan id="logoMainPrefix" fill="#14284B">U.R.</tspan>
+                            <tspan id="logoMainSuffix" fill="#E87A24" dx="-18">I</tspan>
+                        </text>
+                        <text id="logoSubtitle1" x="150" y="117" text-anchor="middle"
+                            font-family="'Montserrat', sans-serif" font-weight="800" font-style="italic" font-size="21"
+                            letter-spacing="1.2" fill="#14284B">URGENCIAS</text>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">U.R.I URGENCIAS</h1>
+                    <p class="text-xs text-blue-200/80 font-medium">Formulario digital</p>
+                </div>
+            </div>
+
+            <!-- Grupo de Acciones -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+
+                <!-- Acciones Secundarias (Estilo Ghost para reducir ruido) -->
+                <button onclick="openSettingsModal()"
+                    class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-100 rounded-md hover:bg-white/10 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                    title="Configuración">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                        </path>
+                    </svg>
+                    <span class="hidden sm:inline">Ajustes</span>
+                </button>
+
+                <button onclick="openHistoryModal()"
+                    class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-100 rounded-md hover:bg-white/10 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="hidden sm:inline">Historial</span>
+                </button>
+
+                <div class="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
+
+                <button onclick="addRow()"
+                    class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-100 rounded-md hover:bg-white/10 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+                    <svg class="w-4 h-4 text-[#E87A24]" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    <span>Añadir</span>
+                </button>
+
+                <button onclick="confirmClear()"
+                    class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-300 rounded-md hover:bg-red-500/20 hover:text-red-100 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
+                    title="Limpiar formulario">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                        </path>
+                    </svg>
+                    <span class="hidden sm:inline">Limpiar</span>
+                </button>
+
+                <div class="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
+
+                <!-- Acciones Primarias (Con peso visual real) -->
+                <button onclick="saveToHistory()"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-emerald-700 rounded-md hover:bg-emerald-600 shadow-sm transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#14284B] focus-visible:ring-emerald-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    <span>Guardar</span>
+                </button>
+
+                <button onclick="printDocument()"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#E87A24] rounded-md hover:bg-[#d66b18] shadow-sm transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#14284B] focus-visible:ring-[#E87A24]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                        </path>
+                    </svg>
+                    <span>Imprimir / PDF</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- CONTENEDOR A4 -->
+    <main class="a4-scroll-wrapper">
+        <div id="a4Page" class="a4-page">
+            <!-- SECCIÓN 1: CABECERA -->
+            <div class="flex justify-between items-start gap-4 mb-2.5">
+                <div class="w-[44%] flex flex-col items-center text-center select-none">
+                    <svg viewBox="0 0 360 158" class="w-full max-w-[300px] h-auto" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M98 20 L185 20 L180 23.5 L94 23.5 Z" fill="#14284B" />
+                        <path d="M82 28 L175 28 L170 31.5 L78 31.5 Z" fill="#14284B" />
+                        <path d="M108 36 L168 36 L163 39 L104 39 Z" fill="#14284B" />
+                        <g transform="translate(154, 6)">
+                            <path d="M8 38 L44 17 L48 25 L12 46 Z" fill="#E87A24" />
+                            <path
+                                d="M40 12 C46 5, 58 4, 65 9 L53 16 L56 22 L68 15 C70 23, 64 33, 54 35 C47 36, 41 33, 38 28 L35 19 Z"
+                                fill="#E87A24" />
+                        </g>
+                        <text x="176" y="96" text-anchor="middle" font-family="'Montserrat', sans-serif"
+                            font-weight="900" font-style="italic" font-size="68" letter-spacing="-2">
+                            <tspan id="logoMainPrefix2" fill="#14284B">U.R.</tspan>
+                            <tspan id="logoMainSuffix2" fill="#E87A24" dx="-18">I</tspan>
+                        </text>
+                        <text id="logoSubtitle1_2" x="174" y="117" text-anchor="middle"
+                            font-family="'Montserrat', sans-serif" font-weight="800" font-style="italic" font-size="21"
+                            letter-spacing="1.2" fill="#14284B">URGENCIAS</text>
+                        <text id="logoSubtitle2_2" x="174" y="131" text-anchor="middle"
+                            font-family="'Montserrat', sans-serif" font-weight="800" font-style="italic"
+                            font-size="11.2" letter-spacing="0.4" fill="#14284B">REFORMAS E INSTALACIONES</text>
+                        <g transform="translate(112, 137)">
+                            <circle cx="9" cy="9" r="8" fill="none" stroke="#14284B" stroke-width="1.5" />
+                            <path
+                                d="M6.5 5.5 C6.5 5.5 7.5 5.2 8 6.2 L8.7 7.5 C8.9 7.9 8.6 8.3 8.2 8.6 C8.7 9.6 9.5 10.4 10.5 10.9 C10.8 10.5 11.2 10.2 11.6 10.4 L12.9 11.1 C13.9 11.6 13.6 12.6 13.6 12.6 C13.2 13.5 12.1 13.8 11.2 13.5 C8.6 12.7 6.4 10.5 5.6 7.9 C5.3 7 5.6 5.9 6.5 5.5 Z"
+                                fill="#14284B" />
+                            <text id="logoPhone2" x="23" y="14.5" font-family="'Inter', sans-serif" font-weight="800"
+                                font-size="16.5" letter-spacing="0.3" fill="#14284B">632026272</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="w-[56%] min-w-0 flex flex-col items-end pt-1">
+                    <h2 class="font-montserrat font-black text-[32px] leading-none tracking-tight text-[#14284B] mb-2">
+                        PRESUPUESTO</h2>
+                    <div
+                        class="w-full box-border bg-[#F1F3F5] border border-slate-200/80 rounded-lg px-3.5 py-2 text-[12px] text-[#14284B] overflow-hidden">
+                        <!-- Cambiado grid-cols-2 por grid-cols-[1.7fr_1fr] para dar ~63% al nº y ~37% a la fecha -->
+                        <div class="grid grid-cols-[1.7fr_1fr] gap-3 items-center mb-1.5">
+                            <div class="flex items-center min-w-0 gap-1.5">
+                                <label for="metaNumber" class="font-bold whitespace-nowrap text-[#14284B]">Nº
+                                    Presupuesto:</label>
+                                <!-- flex-1 permite que ocupe todo el espacio asignado por la columna -->
+                                <input type="text" id="metaNumber"
+                                    class="auto-save editable-line flex-1 min-w-0 font-semibold text-center text-[12px] text-[#14284B]"
+                                    aria-label="Número de Presupuesto">
+                            </div>
+                            <div class="flex items-center min-w-0 gap-1.5">
+                                <label for="metaDate" class="font-bold whitespace-nowrap text-[#14284B]">Fecha:</label>
+                                <!-- max-w-[85px] evita que el input se estire innecesariamente -->
+                                <input type="text" id="metaDate"
+                                    class="auto-save editable-line flex-1 min-w-0 max-w-[85px] font-semibold text-center text-[12px] text-[#14284B]"
+                                    aria-label="Fecha" placeholder="DD/MM/AAAA">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-1.5 min-w-0">
+                            <label for="metaValidity"
+                                class="font-bold whitespace-nowrap text-[#14284B]">Validez:</label>
+                            <!-- Reducido de w-12 a w-10, ya que solo contendrá 2 dígitos (ej: 15, 30) -->
+                            <input type="number" id="metaValidity"
+                                class="auto-save editable-line w-10 min-w-0 font-semibold text-center text-[12px] text-[#14284B]"
+                                aria-label="Validez en días" value="15" min="1">
+                            <span class="font-bold whitespace-nowrap text-[#14284B]">días</span>
+                            <span id="validityDateDisplay"
+                                class="text-[11px] font-semibold text-[#E87A24] ml-1 whitespace-nowrap"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: TARJETAS SIMÉTRICAS -->
+            <div class="grid grid-cols-2 gap-4 items-stretch mb-3">
+                <div
+                    class="flex flex-col rounded-[8px] border border-[#CBD5E1] bg-[#FFFFFF] overflow-hidden select-none shadow-2xs">
+                    <div
+                        class="bg-[#14284B] px-3.5 py-1.5 flex items-center justify-between border-b-2 border-[#E87A24]">
+                        <span
+                            class="text-[11.5px] font-extrabold text-white uppercase tracking-wider flex items-center gap-1.5"><span
+                                class="w-1.5 h-1.5 rounded-full bg-[#E87A24] inline-block"></span>DATOS DE LA
+                            EMPRESA</span>
+                    </div>
+                    <div class="px-3.5 py-2.5 flex-1 flex flex-col justify-between bg-[#F8FAFC]/60">
+                        <div id="companyNameDisplay"
+                            class="font-extrabold text-[13px] text-[#14284B] leading-snug pb-1 border-b border-slate-200/80">
+                            U.R.I Urgencias Reformas e Instalaciones</div>
+                        <div class="flex flex-col justify-between gap-1 pt-1 text-[11.5px]">
+                            <div class="flex items-baseline gap-2"><span
+                                    class="text-[11px] font-bold text-slate-500 w-[68px] shrink-0">NIF/CIF:</span><span
+                                    id="companyNifDisplay" class="font-bold text-[#14284B]">Y9792515A</span></div>
+                            <div class="flex items-baseline gap-2"><span
+                                    class="text-[11px] font-bold text-slate-500 w-[68px] shrink-0">Dirección:</span><span
+                                    id="companyAddressDisplay" class="font-bold text-[#14284B] leading-snug">Calle
+                                    Virgen de la Pineda, nº 14, 4º 3ª, Vila-seca</span></div>
+                            <div class="flex items-baseline gap-2"><span
+                                    class="text-[11px] font-bold text-slate-500 w-[68px] shrink-0">Teléfono:</span><span
+                                    id="companyPhoneDisplay" class="font-bold text-[#14284B]">632026272</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col rounded-[8px] border border-[#CBD5E1] bg-[#FFFFFF] overflow-hidden shadow-2xs">
+                    <div
+                        class="bg-[#14284B] px-3.5 py-1.5 flex items-center justify-between border-b-2 border-[#E87A24]">
+                        <span
+                            class="text-[11.5px] font-extrabold text-white uppercase tracking-wider flex items-center gap-1.5"><span
+                                class="w-1.5 h-1.5 rounded-full bg-[#E87A24] inline-block"></span>DATOS DEL
+                            CLIENTE</span>
+                    </div>
+                    <div class="px-3.5 py-2.5 flex-1 flex flex-col justify-between gap-1 text-[11.5px] bg-white">
+                        <div class="flex items-baseline min-w-0 gap-1.5"><label
+                                class="text-[11px] font-bold text-slate-600 whitespace-nowrap shrink-0">Nombre /
+                                Razón:</label><input type="text" id="clientName"
+                                class="auto-save editable-line flex-1 min-w-0 w-full text-[11.5px] font-semibold text-[#14284B]"
+                                placeholder="Nombre completo o empresa"></div>
+                        <div class="flex items-baseline min-w-0 gap-1.5"><label
+                                class="text-[11px] font-bold text-slate-600 whitespace-nowrap shrink-0">NIF /
+                                CIF:</label><input type="text" id="clientNif"
+                                class="auto-save editable-line flex-1 min-w-0 w-full text-[11.5px] font-semibold text-[#14284B]"
+                                placeholder="00000000X"></div>
+                        <div class="flex items-baseline min-w-0 gap-1.5"><label
+                                class="text-[11px] font-bold text-slate-600 whitespace-nowrap shrink-0">Dirección:</label><input
+                                type="text" id="clientAddress"
+                                class="auto-save editable-line flex-1 min-w-0 w-full text-[11.5px] font-semibold text-[#14284B]"
+                                placeholder="Calle, número, piso..."></div>
+                        <div class="flex items-baseline min-w-0 gap-1.5"><label
+                                class="text-[11px] font-bold text-slate-600 whitespace-nowrap shrink-0">Población:</label><input
+                                type="text" id="clientCity"
+                                class="auto-save editable-line flex-1 min-w-0 w-full text-[11.5px] font-semibold text-[#14284B]"
+                                placeholder="Localidad, Provincia"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: TABLA DE CONCEPTOS -->
+            <div class="items-wrapper">
+                <div class="watermark-layer opacity-[0.05] flex items-center justify-center" aria-hidden="true">
+                    <svg viewBox="70 10 210 150" class="w-[65%] max-w-[350px] h-auto"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M98 20 L185 20 L180 23.5 L94 23.5 Z" fill="#14284B" />
+                        <path d="M82 28 L175 28 L170 31.5 L78 31.5 Z" fill="#14284B" />
+                        <path d="M108 36 L168 36 L163 39 L104 39 Z" fill="#14284B" />
+                        <g transform="translate(154, 6)">
+                            <path d="M8 38 L44 17 L48 25 L12 46 Z" fill="#E87A24" />
+                            <path
+                                d="M40 12 C46 5, 58 4, 65 9 L53 16 L56 22 L68 15 C70 23, 64 33, 54 35 C47 36, 41 33, 38 28 L35 19 Z"
+                                fill="#E87A24" />
+                        </g>
+                        <text x="175" y="96" text-anchor="middle" font-family="'Montserrat', sans-serif"
+                            font-weight="900" font-style="italic" font-size="68" letter-spacing="-2">
+                            <tspan id="watermarkPrefix" fill="#14284B">U.R.</tspan>
+                            <tspan id="watermarkSuffix" fill="#E87A24" dx="-18">I</tspan>
+                        </text>
+                        <text id="watermarkSubtitle1" x="175" y="117" text-anchor="middle"
+                            font-family="'Montserrat', sans-serif" font-weight="800" font-style="italic" font-size="21"
+                            letter-spacing="1.2" fill="#14284B">URGENCIAS</text>
+                        <text id="watermarkSubtitle2" x="175" y="131" text-anchor="middle"
+                            font-family="'Montserrat', sans-serif" font-weight="800" font-style="italic"
+                            font-size="11.2" letter-spacing="0.4" fill="#14284B">REFORMAS E INSTALACIONES</text>
+                        <g transform="translate(114, 137)">
+                            <circle cx="9" cy="9" r="8" fill="none" stroke="#14284B" stroke-width="1.5" />
+                            <path
+                                d="M6.5 5.5 C6.5 5.5 7.5 5.2 8 6.2 L8.7 7.5 C8.9 7.9 8.6 8.3 8.2 8.6 C8.7 9.6 9.5 10.4 10.5 10.9 C10.8 10.5 11.2 10.2 11.6 10.4 L12.9 11.1 C13.9 11.6 13.6 12.6 13.6 12.6 C13.2 13.5 12.1 13.8 11.2 13.5 C8.6 12.7 6.4 10.5 5.6 7.9 C5.3 7 5.6 5.9 6.5 5.5 Z"
+                                fill="#14284B" />
+                            <text id="watermarkPhone" x="23" y="14.5" font-family="'Inter', sans-serif"
+                                font-weight="800" font-size="16.5" letter-spacing="0.3" fill="#14284B">632026272</text>
+                        </g>
+                    </svg>
+                </div>
+                <div class="table-grid">
+                    <div class="table-header">
+                        <div>Descripción / Concepto</div>
+                        <div>Cantidad</div>
+                        <div>Precio Unitario</div>
+                        <div>Total</div>
+                    </div>
+                    <div class="vertical-guides">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div id="tableBodyScroll" class="table-body-container">
+                        <div id="itemsContainer" class="flex flex-col"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: TOTALES -->
+            <div class="totals-grid">
+                <div class="totals-row-label">Base Imponible (€):</div>
+                <div id="baseImponibleDisplay" class="totals-row-value">0,00 €</div>
+                <div class="totals-row-label">
+                    <span>IVA (</span>
+                    <input type="number" id="ivaRateInput"
+                        class="auto-save w-8 text-center font-bold bg-transparent border-b border-gray-400 focus:border-[#E87A24] outline-none text-[12px]"
+                        value="21" min="0" max="100" step="1" aria-label="Porcentaje IVA">
+                    <span>%) (€):</span>
+                </div>
+                <div id="ivaAmountDisplay" class="totals-row-value">0,00 €</div>
+                <div class="totals-final-label">TOTAL PRESUPUESTO (€):</div>
+                <div id="totalPresupuestoDisplay" class="totals-final-value">0,00 €</div>
+            </div>
+
+            <!-- SECCIÓN 5: PIE DE PÁGINA -->
+            <div id="footerSection" class="grid grid-cols-2 gap-4">
+                <div
+                    class="border-[1.5px] border-[#E87A24] rounded-lg px-3.5 py-2 flex flex-col justify-between h-[116px] bg-white">
+                    <h4 class="text-[11.5px] font-extrabold text-center text-gray-900 uppercase tracking-tight mb-1">
+                        CONDICIONES Y FORMA DE PAGO</h4>
+                    <textarea id="paymentConditions" rows="4" class="auto-save lined-notes flex-1"
+                        aria-label="Condiciones de pago">50% a la aceptación del presupuesto y 50% a la finalización.
+Forma de pago: Transferencia bancaria o efectivo.</textarea>
+                </div>
+                <div
+                    class="border-[1.5px] border-[#14284B] rounded-lg px-3.5 py-2 flex flex-col justify-between h-[116px] bg-white">
+                    <div>
+                        <h4
+                            class="text-[11.5px] font-extrabold text-center text-gray-900 uppercase tracking-tight mb-1">
+                            FIRMA Y ACEPTACIÓN DEL CLIENTE</h4>
+                        <p class="text-[11.5px] text-gray-800">Firma y Sello:</p>
+                    </div>
+                    <div class="flex items-baseline text-[11.5px] text-gray-900 pt-1">
+                        <span class="mr-1.5">Fecha:</span>
+                        <input type="text" id="signatureDate"
+                            class="auto-save editable-line w-28 text-center text-[11.5px]" aria-label="Fecha firma">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notificación Toast -->
+    <div id="toast" class="toast-notification no-print"></div>
+
+    <!-- Modal Confirmación Limpiar -->
+    <div id="confirmModal"
+        class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border-t-4 border-[#E87A24]">
+            <h3 class="text-lg font-bold text-[#14284B] mb-2">¿Limpiar presupuesto?</h3>
+            <p class="text-sm text-gray-600 mb-5">Se borrarán los datos del cliente y los conceptos actuales (el
+                historial no se verá afectado).</p>
+            <div class="flex justify-end gap-2.5">
+                <button onclick="closeConfirmModal()"
+                    class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
+                <button onclick="clearAllData()"
+                    class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition cursor-pointer">Sí,
+                    limpiar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Configuración Empresa -->
+<div id="settingsModal"
+    class="no-print fixed inset-0 bg-slate-900/65 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div
+        class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border-t-4 border-[#E87A24] overflow-hidden my-auto">
+        <div class="bg-[#14284B] text-white px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-bold leading-tight">Configuración Empresa</h3>
+            <button onclick="closeSettingsModal()"
+                class="text-slate-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <form id="settingsForm" onsubmit="saveCompanySettings(event)" class="p-6 space-y-4 text-sm">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Nombre Comercial</label>
+                <input type="text" id="cfgCompanyName" required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Siglas Logo</label>
+                    <input type="text" id="cfgLogoInitials" maxlength="8" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 font-bold focus:border-[#E87A24] outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo 1</label>
+                    <input type="text" id="cfgLogoSub1" maxlength="22" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo 2</label>
+                    <input type="text" id="cfgLogoSub2" maxlength="34" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">NIF / CIF</label>
+                    <input type="text" id="cfgNif" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Teléfono</label>
+                    <input type="text" id="cfgPhone" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">IVA por defecto (%)</label>
+                    <input type="number" id="cfgDefaultIva" min="0" max="100" step="1" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Dirección Fiscal</label>
+                <input type="text" id="cfgAddress" required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+            </div>
+
+            <!-- Sección mejorada para el interruptor del pie de página -->
+            <div class="pt-3 border-t border-slate-200">
+                <div class="flex items-center justify-between p-3 bg-[#F8FAFC] rounded-lg border border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-8 h-8 bg-[#E87A24]/10 rounded-lg">
+                            <svg class="w-4 h-4 text-[#E87A24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-[#14284B]">Pie de página</h4>
+                            <p class="text-xs text-slate-500">Mostrar/ocultar condiciones de pago y firma</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="cfgShowFooter" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#E87A24] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#E87A24]"></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                <button type="button" onclick="resetCompanySettings()"
+                    class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition cursor-pointer">Restaurar originales</button>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeSettingsModal()"
+                        class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
+                    <button type="submit"
+                        class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#E87A24] hover:bg-[#d66b18] shadow transition cursor-pointer">Guardar cambios</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <!-- Modal Historial -->
+    <div id="historyModal"
+        class="no-print fixed inset-0 bg-slate-900/65 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div
+            class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border-t-4 border-[#E87A24] overflow-hidden my-auto flex flex-col max-h-[85vh]">
+            <div class="bg-[#14284B] text-white px-6 py-4 flex items-center justify-between flex-shrink-0">
+                <h3 class="text-base font-bold leading-tight">Historial de Presupuestos</h3>
+                <button onclick="closeHistoryModal()"
+                    class="text-slate-300 hover:text-white p-1 rounded-lg transition cursor-pointer"><svg
+                        class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <div id="historyList" class="space-y-3">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <div id="emptyHistoryMsg" class="hidden text-center py-8 text-gray-500">
+                    <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <p>No hay presupuestos guardados en el historial.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. CONFIGURACIÓN Y ESTADO GLOBAL
+        // ==========================================
+        const STORAGE_KEYS = {
+            COMPANY: 'uri_company_settings_v2',
+            DRAFT: 'uri_budget_draft_v2',
+            HISTORY: 'uri_budget_history_v2',
+            LAST_QUOTE: 'uri_last_quote_number_v2'
+        };
+
+        const DEFAULT_COMPANY_DATA = {
+            name: 'U.R.I Urgencias Reformas e Instalaciones',
+            logoInitials: 'U.R.I',
+            logoSub1: 'URGENCIAS',
+            logoSub2: 'REFORMAS E INSTALACIONES',
+            nif: 'Y9792515A',
+            address: 'Calle Virgen de la Pineda, nº 14, 4º 3ª, Vila-seca.',
+            phone: '632026272',
+            defaultIva: 21,
+            showFooter: false
+        };
+
+        let companySettings = { ...DEFAULT_COMPANY_DATA };
+        let saveDebounceTimer;
+
+        // ==========================================
+        // 2. FUNCIONES DE SEGURIDAD Y DOM (XSS FREE)
+        // ==========================================
+        function addRow(desc = '', qty = '', price = '') {
+            const container = document.getElementById('itemsContainer');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = 'item-row';
+
+            // Celda 1: Descripción (Segura)
+            const descDiv = document.createElement('div');
+            descDiv.className = 'relative flex items-start';
+
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'row-delete-btn no-print';
+            delBtn.title = 'Eliminar';
+            delBtn.textContent = '×';
+            delBtn.onclick = function () { removeRow(this); };
+
+            const textarea = document.createElement('textarea');
+            textarea.rows = 1;
+            textarea.className = 'cell-textarea auto-save';
+            textarea.placeholder = 'Concepto o descripción...';
+            textarea.value = desc; // Asignación segura contra XSS
+            textarea.oninput = function () { autoResizeTextarea(this); triggerSave(); };
+
+            descDiv.appendChild(delBtn);
+            descDiv.appendChild(textarea);
+
+            // Celda 2: Cantidad
+            const qtyDiv = document.createElement('div');
+            qtyDiv.className = 'flex items-start justify-center';
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.step = 'any';
+            qtyInput.min = '0';
+            qtyInput.className = 'cell-input cell-input-center qty-input auto-save';
+            qtyInput.placeholder = '0';
+            qtyInput.value = qty;
+            qtyInput.oninput = function () { updateRowTotal(this); triggerSave(); };
+            qtyDiv.appendChild(qtyInput);
+
+            // Celda 3: Precio
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'flex items-start justify-end';
+            const priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.step = '0.01';
+            priceInput.min = '0';
+            priceInput.className = 'cell-input price-input auto-save';
+            priceInput.placeholder = '0.00';
+            priceInput.value = price !== '' ? Number(price).toFixed(2) : '';
+            priceInput.oninput = function () { updateRowTotal(this); triggerSave(); };
+            priceDiv.appendChild(priceInput);
+
+            // Celda 4: Total
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'flex items-start justify-end px-2 py-1 text-[12px] font-semibold text-gray-900 row-total';
+            if (qty !== '' && price !== '') {
+                totalDiv.textContent = formatEuro(Number(qty) * Number(price));
+            }
+
+            row.appendChild(descDiv);
+            row.appendChild(qtyDiv);
+            row.appendChild(priceDiv);
+            row.appendChild(totalDiv);
+            container.appendChild(row);
+
+            autoResizeTextarea(textarea);
+            calculateTotals();
+
+            if (desc === '') {
+                const scrollContainer = document.getElementById('tableBodyScroll');
+                if (scrollContainer) scrollContainer.scrollTo({ top: scrollContainer.scrollHeight, behavior: 'smooth' });
+                textarea.focus();
+            }
+        }
+
+        function removeRow(btn) {
+            const container = document.getElementById('itemsContainer');
+            if (!container || !btn) return;
+
+            if (container.children.length > 1) {
+                btn.closest('.item-row').remove();
+            } else {
+                const row = btn.closest('.item-row');
+                row.querySelector('textarea').value = '';
+                row.querySelector('.qty-input').value = '';
+                row.querySelector('.price-input').value = '';
+                row.querySelector('.row-total').textContent = '';
+                autoResizeTextarea(row.querySelector('textarea'));
+            }
+            calculateTotals();
+            triggerSave();
+        }
+
+        // ==========================================
+        // 3. CÁLCULOS Y FORMATO
+        // ==========================================
+        function formatEuro(amount) {
+            if (isNaN(amount) || amount === null) amount = 0;
+            return amount.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        }
+
+        function updateRowTotal(input) {
+            const row = input.closest('.item-row');
+            if (!row) return;
+            const qty = parseFloat(row.querySelector('.qty-input')?.value) || 0;
+            const price = parseFloat(row.querySelector('.price-input')?.value) || 0;
+            const totalCell = row.querySelector('.row-total');
+
+            if (row.querySelector('.qty-input').value === '' && row.querySelector('.price-input').value === '') {
+                totalCell.textContent = '';
+            } else {
+                totalCell.textContent = formatEuro(qty * price);
+            }
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            const rows = document.querySelectorAll('#itemsContainer .item-row');
+            let baseImponible = 0;
+            rows.forEach(row => {
+                baseImponible += (parseFloat(row.querySelector('.qty-input')?.value) || 0) * (parseFloat(row.querySelector('.price-input')?.value) || 0);
+            });
+
+            const ivaRate = parseFloat(document.getElementById('ivaRateInput')?.value) || 0;
+            const ivaAmount = baseImponible * (ivaRate / 100);
+            const totalPresupuesto = baseImponible + ivaAmount;
+
+            document.getElementById('baseImponibleDisplay').textContent = formatEuro(baseImponible);
+            document.getElementById('ivaAmountDisplay').textContent = formatEuro(ivaAmount);
+            document.getElementById('totalPresupuestoDisplay').textContent = formatEuro(totalPresupuesto);
+        }
+
+        function autoResizeTextarea(el) {
+            if (!el) return;
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+
+        // ==========================================
+        // 4. AUTO-GUARDADO Y RECUPERACIÓN (DRAFT)
+        // ==========================================
+        function triggerSave() {
+            clearTimeout(saveDebounceTimer);
+            saveDebounceTimer = setTimeout(saveDraft, 500);
+        }
+
+        function saveDraft() {
+            const rows = [];
+            document.querySelectorAll('#itemsContainer .item-row').forEach(row => {
+                rows.push({
+                    desc: row.querySelector('textarea').value,
+                    qty: row.querySelector('.qty-input').value,
+                    price: row.querySelector('.price-input').value
+                });
+            });
+
+            const draftData = {
+                metaNumber: document.getElementById('metaNumber').value,
+                metaDate: document.getElementById('metaDate').value,
+                metaValidity: document.getElementById('metaValidity').value,
+                clientName: document.getElementById('clientName').value,
+                clientNif: document.getElementById('clientNif').value,
+                clientAddress: document.getElementById('clientAddress').value,
+                clientCity: document.getElementById('clientCity').value,
+                ivaRate: document.getElementById('ivaRateInput').value,
+                paymentConditions: document.getElementById('paymentConditions').value,
+                signatureDate: document.getElementById('signatureDate').value,
+                rows: rows,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEYS.DRAFT, JSON.stringify(draftData));
+            } catch (e) {
+                console.warn('Error al guardar borrador:', e);
+            }
+        }
+
+        function loadDraft() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.DRAFT);
+                if (!saved) return false;
+
+                const data = JSON.parse(saved);
+                document.getElementById('metaNumber').value = data.metaNumber || '';
+                document.getElementById('metaDate').value = data.metaDate || '';
+                document.getElementById('metaValidity').value = data.metaValidity || '15';
+                document.getElementById('clientName').value = data.clientName || '';
+                document.getElementById('clientNif').value = data.clientNif || '';
+                document.getElementById('clientAddress').value = data.clientAddress || '';
+                document.getElementById('clientCity').value = data.clientCity || '';
+                document.getElementById('ivaRateInput').value = data.ivaRate || companySettings.defaultIva;
+                document.getElementById('paymentConditions').value = data.paymentConditions || '';
+                document.getElementById('signatureDate').value = data.signatureDate || '';
+
+                const container = document.getElementById('itemsContainer');
+                container.innerHTML = '';
+                if (data.rows && data.rows.length > 0) {
+                    data.rows.forEach(r => addRow(r.desc, r.qty, r.price));
+                } else {
+                    addRow();
+                }
+
+                updateValidityDate();
+                calculateTotals();
+                return true;
+            } catch (e) {
+                console.warn('Error al cargar borrador:', e);
+                return false;
+            }
+        }
+
+        // ==========================================
+        // 5. NÚMERO DE PRESUPUESTO Y VALIDEZ
+        // ==========================================
+        function generateQuoteNumber() {
+            const year = new Date().getFullYear();
+            let lastData = JSON.parse(localStorage.getItem(STORAGE_KEYS.LAST_QUOTE) || `{"year":${year}, "num":0}`);
+
+            if (lastData.year !== year) {
+                lastData = { year: year, num: 0 };
+            }
+            lastData.num += 1;
+            localStorage.setItem(STORAGE_KEYS.LAST_QUOTE, JSON.stringify(lastData));
+
+            return `${year}-${String(lastData.num).padStart(3, '0')}`;
+        }
+
+        function updateValidityDate() {
+            const dateStr = document.getElementById('metaDate').value;
+            const days = parseInt(document.getElementById('metaValidity').value) || 15;
+            const display = document.getElementById('validityDateDisplay');
+
+            if (!dateStr || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+                display.textContent = '';
+                return;
+            }
+
+            const [dd, mm, yyyy] = dateStr.split('/');
+            const date = new Date(yyyy, mm - 1, dd);
+            date.setDate(date.getDate() + days);
+
+            const validDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+            display.textContent = `(Hasta ${validDate})`;
+        }
+
+        // ==========================================
+        // 6. HISTORIAL DE PRESUPUESTOS
+        // ==========================================
+        function saveToHistory() {
+            const clientName = document.getElementById('clientName').value || 'Cliente sin nombre';
+            const quoteNumber = document.getElementById('metaNumber').value || 'Sin número';
+            const total = document.getElementById('totalPresupuestoDisplay').textContent;
+
+            // Guardar estado actual antes de archivar
+            saveDraft();
+            const draftData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DRAFT));
+
+            const historyEntry = {
+                id: Date.now().toString(),
+                quoteNumber: quoteNumber,
+                date: document.getElementById('metaDate').value,
+                client: clientName,
+                total: total,
+                data: draftData
+            };
+
+            try {
+                const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+                history.unshift(historyEntry); // Añadir al principio
+                localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+
+                // Limpiar borrador actual para empezar uno nuevo
+                localStorage.removeItem(STORAGE_KEYS.DRAFT);
+                showToast('Presupuesto guardado en el historial correctamente.');
+
+                // Generar nuevo número para el siguiente
+                document.getElementById('metaNumber').value = generateQuoteNumber();
+                clearAllData(true); // true = silent mode
+            } catch (e) {
+                showToast('Error al guardar en el historial.');
+            }
+        }
+
+        function openHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            const list = document.getElementById('historyList');
+            const emptyMsg = document.getElementById('emptyHistoryMsg');
+
+            list.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+
+            if (history.length === 0) {
+                emptyMsg.classList.remove('hidden');
+            } else {
+                emptyMsg.classList.add('hidden');
+                history.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
+                    div.innerHTML = `
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-[#14284B] text-sm">${item.quoteNumber}</span>
+                                <span class="text-xs text-slate-500">${item.date}</span>
+                            </div>
+                            <div class="text-sm text-gray-700 truncate">${item.client}</div>
+                            <div class="text-xs font-semibold text-[#E87A24] mt-1">${item.total}</div>
+                        </div>
+                        <div class="flex gap-2 ml-3">
+                            <button onclick="loadFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-white bg-[#14284B] hover:bg-[#1E3A6D] rounded transition">Cargar</button>
+                            <button onclick="deleteFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded transition">Eliminar</button>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function loadFromHistory(index) {
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+            const item = history[index];
+            if (!item) return;
+
+            // Restaurar datos
+            localStorage.setItem(STORAGE_KEYS.DRAFT, JSON.stringify(item.data));
+            loadDraft();
+            closeHistoryModal();
+            showToast('Presupuesto cargado desde el historial.');
+        }
+
+        function deleteFromHistory(index) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este presupuesto del historial?')) return;
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+            history.splice(index, 1);
+            localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+            openHistoryModal(); // Re-renderizar
+            showToast('Presupuesto eliminado del historial.');
+        }
+
+        // ==========================================
+        // 7. CONFIGURACIÓN DE EMPRESA (Existente mejorada)
+        // ==========================================
+        function loadCompanySettings() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.COMPANY);
+                if (saved) companySettings = { ...DEFAULT_COMPANY_DATA, ...JSON.parse(saved) };
+            } catch (e) { console.warn('LocalStorage error:', e); }
+            applyCompanySettingsToUI();
+        }
+
+        function applyCompanySettingsToUI() {
+            const setElemText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setElemText('companyNameDisplay', companySettings.name);
+            setElemText('companyNifDisplay', companySettings.nif);
+            setElemText('companyAddressDisplay', companySettings.address);
+            setElemText('companyPhoneDisplay', companySettings.phone);
+
+            const initials = (companySettings.logoInitials || 'U.R.I').trim();
+            const prefix = initials.length > 1 ? initials.slice(0, -1) : initials;
+            const suffix = initials.length > 1 ? initials.slice(-1) : '';
+
+            ['logoMainPrefix', 'logoMainPrefix2', 'watermarkPrefix'].forEach(id => setElemText(id, prefix));
+            ['logoMainSuffix', 'logoMainSuffix2', 'watermarkSuffix'].forEach(id => setElemText(id, suffix));
+            ['logoSubtitle1', 'logoSubtitle1_2', 'watermarkSubtitle1'].forEach(id => setElemText(id, companySettings.logoSub1));
+            ['logoSubtitle2', 'logoSubtitle2_2', 'watermarkSubtitle2'].forEach(id => setElemText(id, companySettings.logoSub2));
+            ['logoPhone', 'logoPhone2', 'watermarkPhone'].forEach(id => setElemText(id, companySettings.phone));
+
+            document.getElementById('ivaRateInput').value = companySettings.defaultIva;
+        
+    const footerSection = document.getElementById('footerSection');
+    if (footerSection) {
+        footerSection.style.display = companySettings.showFooter ? 'grid' : 'none';
+    }
+
+        }
+
+        function openSettingsModal() {
+            const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+            setVal('cfgCompanyName', companySettings.name);
+            setVal('cfgLogoInitials', companySettings.logoInitials);
+            setVal('cfgLogoSub1', companySettings.logoSub1);
+            setVal('cfgLogoSub2', companySettings.logoSub2);
+            setVal('cfgNif', companySettings.nif);
+            setVal('cfgPhone', companySettings.phone);
+            setVal('cfgDefaultIva', companySettings.defaultIva);
+            setVal('cfgAddress', companySettings.address);
+            document.getElementById('settingsModal').classList.remove('hidden');
+            document.getElementById('settingsModal').classList.add('flex');
+            document.getElementById('cfgShowFooter').checked = companySettings.showFooter;
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+            document.getElementById('settingsModal').classList.remove('flex');
+        }
+
+function saveCompanySettings(event) {
+    event.preventDefault();
+    const getVal = (id) => document.getElementById(id)?.value.trim() || '';
+    companySettings = {
+        name: getVal('cfgCompanyName'),
+        logoInitials: getVal('cfgLogoInitials').toUpperCase(),
+        logoSub1: getVal('cfgLogoSub1').toUpperCase(),
+        logoSub2: getVal('cfgLogoSub2').toUpperCase(),
+        nif: getVal('cfgNif').toUpperCase(),
+        phone: getVal('cfgPhone'),
+        defaultIva: parseFloat(getVal('cfgDefaultIva')) || 0,
+        address: getVal('cfgAddress'),
+        showFooter: document.getElementById('cfgShowFooter').checked // Guardar la configuración del pie de página
+    };
+    localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(companySettings));
+    applyCompanySettingsToUI();
+    closeSettingsModal();
+    showToast('Configuración guardada correctamente.');
+}
+
+function resetCompanySettings() {
+    companySettings = { ...DEFAULT_COMPANY_DATA };
+    localStorage.removeItem(STORAGE_KEYS.COMPANY);
+    applyCompanySettingsToUI();
+    openSettingsModal();
+    showToast('Valores restaurados.');
+}
+
+        // ==========================================
+        // 8. UTILIDADES Y EVENTOS
+        // ==========================================
+        function setTodayDate() {
+            const today = new Date();
+            const el = document.getElementById('metaDate');
+            if (el && !el.value) {
+                el.value = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+            }
+        }
+
+        function confirmClear() {
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmModal').classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+        }
+
+        function clearAllData(silent = false) {
+            if (!silent) closeConfirmModal();
+            document.getElementById('metaNumber').value = generateQuoteNumber();
+            setTodayDate();
+            document.getElementById('metaValidity').value = '15';
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientNif').value = '';
+            document.getElementById('clientAddress').value = '';
+            document.getElementById('clientCity').value = '';
+            document.getElementById('paymentConditions').value = '50% a la aceptación del presupuesto y 50% a la finalización.\nForma de pago: Transferencia bancaria o efectivo.';
+            document.getElementById('signatureDate').value = '';
+
+            document.getElementById('itemsContainer').innerHTML = '';
+            addRow();
+            addRow();
+            addRow();
+
+            updateValidityDate();
+            calculateTotals();
+            localStorage.removeItem(STORAGE_KEYS.DRAFT);
+            if (!silent) showToast('Formulario limpiado y listo para nuevo presupuesto.');
+        }
+
+        function printDocument() {
+            if (document.activeElement) document.activeElement.blur();
+            window.print();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCompanySettings();
+            setTodayDate();
+
+            // Intentar cargar borrador, si no existe, iniciar limpio con número nuevo
+            const hasDraft = loadDraft();
+            if (!hasDraft) {
+                document.getElementById('metaNumber').value = generateQuoteNumber();
+                addRow();
+                addRow();
+                addRow();
+                updateValidityDate();
+                calculateTotals();
+            }
+
+            // Listeners globales para auto-guardado y validez
+            document.querySelectorAll('.auto-save').forEach(el => {
+                el.addEventListener('input', triggerSave);
+            });
+            document.getElementById('metaDate').addEventListener('change', updateValidityDate);
+            document.getElementById('metaValidity').addEventListener('input', updateValidityDate);
+        });
+    </script>
+</body>
+
+</html>
