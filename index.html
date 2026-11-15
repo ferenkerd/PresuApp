@@ -800,99 +800,113 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
     </div>
 
     <!-- Modal Configuración Empresa -->
-<div id="settingsModal"
-    class="no-print fixed inset-0 bg-slate-900/65 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
-    <div
-        class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border-t-4 border-[#E87A24] overflow-hidden my-auto">
-        <div class="bg-[#14284B] text-white px-6 py-4 flex items-center justify-between">
-            <h3 class="text-base font-bold leading-tight">Configuración Empresa</h3>
-            <button onclick="closeSettingsModal()"
-                class="text-slate-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        <form id="settingsForm" onsubmit="saveCompanySettings(event)" class="p-6 space-y-4 text-sm">
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Nombre Comercial</label>
-                <input type="text" id="cfgCompanyName" required
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+    <div id="settingsModal"
+        class="no-print fixed inset-0 bg-slate-900/65 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div
+            class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border-t-4 border-[#E87A24] overflow-hidden my-auto">
+            <div class="bg-[#14284B] text-white px-6 py-4 flex items-center justify-between">
+                <h3 class="text-base font-bold leading-tight">Configuración Empresa</h3>
+                <button onclick="closeSettingsModal()"
+                    class="text-slate-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <form id="settingsForm" onsubmit="saveCompanySettings(event)" class="p-6 space-y-4 text-sm">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Siglas Logo</label>
-                    <input type="text" id="cfgLogoInitials" maxlength="8" required
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 font-bold focus:border-[#E87A24] outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo 1</label>
-                    <input type="text" id="cfgLogoSub1" maxlength="22" required
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Nombre
+                        Comercial</label>
+                    <input type="text" id="cfgCompanyName" required
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo 2</label>
-                    <input type="text" id="cfgLogoSub2" maxlength="34" required
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
-                </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">NIF / CIF</label>
-                    <input type="text" id="cfgNif" required
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Teléfono</label>
-                    <input type="text" id="cfgPhone" required
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">IVA por defecto (%)</label>
-                    <input type="number" id="cfgDefaultIva" min="0" max="100" step="1" required
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
-                </div>
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Dirección Fiscal</label>
-                <input type="text" id="cfgAddress" required
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
-            </div>
-
-            <!-- Sección mejorada para el interruptor del pie de página -->
-            <div class="pt-3 border-t border-slate-200">
-                <div class="flex items-center justify-between p-3 bg-[#F8FAFC] rounded-lg border border-slate-200">
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center justify-center w-8 h-8 bg-[#E87A24]/10 rounded-lg">
-                            <svg class="w-4 h-4 text-[#E87A24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-[#14284B]">Pie de página</h4>
-                            <p class="text-xs text-slate-500">Mostrar/ocultar condiciones de pago y firma</p>
-                        </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Siglas
+                            Logo</label>
+                        <input type="text" id="cfgLogoInitials" maxlength="8" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 font-bold focus:border-[#E87A24] outline-none">
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="cfgShowFooter" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#E87A24] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#E87A24]"></div>
-                    </label>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo
+                            1</label>
+                        <input type="text" id="cfgLogoSub1" maxlength="22" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Subtítulo
+                            2</label>
+                        <input type="text" id="cfgLogoSub2" maxlength="34" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                    </div>
                 </div>
-            </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">NIF /
+                            CIF</label>
+                        <input type="text" id="cfgNif" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Teléfono</label>
+                        <input type="text" id="cfgPhone" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">IVA por
+                            defecto (%)</label>
+                        <input type="number" id="cfgDefaultIva" min="0" max="100" step="1" required
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#14284B] mb-1">Dirección
+                        Fiscal</label>
+                    <input type="text" id="cfgAddress" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
+                </div>
 
-            <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                <button type="button" onclick="resetCompanySettings()"
-                    class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition cursor-pointer">Restaurar originales</button>
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="closeSettingsModal()"
-                        class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
-                    <button type="submit"
-                        class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#E87A24] hover:bg-[#d66b18] shadow transition cursor-pointer">Guardar cambios</button>
+                <!-- Sección mejorada para el interruptor del pie de página -->
+                <div class="pt-3 border-t border-slate-200">
+                    <div class="flex items-center justify-between p-3 bg-[#F8FAFC] rounded-lg border border-slate-200">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-8 h-8 bg-[#E87A24]/10 rounded-lg">
+                                <svg class="w-4 h-4 text-[#E87A24]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-[#14284B]">Pie de página</h4>
+                                <p class="text-xs text-slate-500">Mostrar/ocultar condiciones de pago y firma</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="cfgShowFooter" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#E87A24] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#E87A24]">
+                            </div>
+                        </label>
+                    </div>
                 </div>
-            </div>
-        </form>
+
+                <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <button type="button" onclick="resetCompanySettings()"
+                        class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition cursor-pointer">Restaurar
+                        originales</button>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="closeSettingsModal()"
+                            class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition cursor-pointer">Cancelar</button>
+                        <button type="submit"
+                            class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#E87A24] hover:bg-[#d66b18] shadow transition cursor-pointer">Guardar
+                            cambios</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Modal Historial -->
     <div id="historyModal"
@@ -1239,42 +1253,44 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             }
         }
 
-        function openHistoryModal() {
-            const modal = document.getElementById('historyModal');
-            const list = document.getElementById('historyList');
-            const emptyMsg = document.getElementById('emptyHistoryMsg');
+function openHistoryModal() {
+    const modal = document.getElementById('historyModal');
+    const list = document.getElementById('historyList');
+    const emptyMsg = document.getElementById('emptyHistoryMsg');
 
-            list.innerHTML = '';
-            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+    list.innerHTML = '';
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
 
-            if (history.length === 0) {
-                emptyMsg.classList.remove('hidden');
-            } else {
-                emptyMsg.classList.add('hidden');
-                history.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
-                    div.innerHTML = `
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="font-bold text-[#14284B] text-sm">${item.quoteNumber}</span>
-                                <span class="text-xs text-slate-500">${item.date}</span>
-                            </div>
-                            <div class="text-sm text-gray-700 truncate">${item.client}</div>
-                            <div class="text-xs font-semibold text-[#E87A24] mt-1">${item.total}</div>
-                        </div>
-                        <div class="flex gap-2 ml-3">
-                            <button onclick="loadFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-white bg-[#14284B] hover:bg-[#1E3A6D] rounded transition">Cargar</button>
-                            <button onclick="deleteFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded transition">Eliminar</button>
-                        </div>
-                    `;
-                    list.appendChild(div);
-                });
-            }
+    if (history.length === 0) {
+        emptyMsg.classList.remove('hidden');
+    } else {
+        emptyMsg.classList.add('hidden');
+        history.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
+            
+            // ✅ AQUÍ ESTÁ LA CORRECCIÓN: Usamos escapeHtml() en todo lo que escribió el usuario
+            div.innerHTML = `
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-[#14284B] text-sm">${escapeHtml(item.quoteNumber)}</span>
+                        <span class="text-xs text-slate-500">${escapeHtml(item.date)}</span>
+                    </div>
+                    <div class="text-sm text-gray-700 truncate">${escapeHtml(item.client)}</div>
+                    <div class="text-xs font-semibold text-[#E87A24] mt-1">${escapeHtml(item.total)}</div>
+                </div>
+                <div class="flex gap-2 ml-3">
+                    <button onclick="loadFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-white bg-[#14284B] hover:bg-[#1E3A6D] rounded transition">Cargar</button>
+                    <button onclick="deleteFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded transition">Eliminar</button>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
 
         function closeHistoryModal() {
             const modal = document.getElementById('historyModal');
@@ -1332,11 +1348,11 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             ['logoPhone', 'logoPhone2', 'watermarkPhone'].forEach(id => setElemText(id, companySettings.phone));
 
             document.getElementById('ivaRateInput').value = companySettings.defaultIva;
-        
-    const footerSection = document.getElementById('footerSection');
-    if (footerSection) {
-        footerSection.style.display = companySettings.showFooter ? 'grid' : 'none';
-    }
+
+            const footerSection = document.getElementById('footerSection');
+            if (footerSection) {
+                footerSection.style.display = companySettings.showFooter ? 'grid' : 'none';
+            }
 
         }
 
@@ -1360,33 +1376,33 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             document.getElementById('settingsModal').classList.remove('flex');
         }
 
-function saveCompanySettings(event) {
-    event.preventDefault();
-    const getVal = (id) => document.getElementById(id)?.value.trim() || '';
-    companySettings = {
-        name: getVal('cfgCompanyName'),
-        logoInitials: getVal('cfgLogoInitials').toUpperCase(),
-        logoSub1: getVal('cfgLogoSub1').toUpperCase(),
-        logoSub2: getVal('cfgLogoSub2').toUpperCase(),
-        nif: getVal('cfgNif').toUpperCase(),
-        phone: getVal('cfgPhone'),
-        defaultIva: parseFloat(getVal('cfgDefaultIva')) || 0,
-        address: getVal('cfgAddress'),
-        showFooter: document.getElementById('cfgShowFooter').checked // Guardar la configuración del pie de página
-    };
-    localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(companySettings));
-    applyCompanySettingsToUI();
-    closeSettingsModal();
-    showToast('Configuración guardada correctamente.');
-}
+        function saveCompanySettings(event) {
+            event.preventDefault();
+            const getVal = (id) => document.getElementById(id)?.value.trim() || '';
+            companySettings = {
+                name: getVal('cfgCompanyName'),
+                logoInitials: getVal('cfgLogoInitials').toUpperCase(),
+                logoSub1: getVal('cfgLogoSub1').toUpperCase(),
+                logoSub2: getVal('cfgLogoSub2').toUpperCase(),
+                nif: getVal('cfgNif').toUpperCase(),
+                phone: getVal('cfgPhone'),
+                defaultIva: parseFloat(getVal('cfgDefaultIva')) || 0,
+                address: getVal('cfgAddress'),
+                showFooter: document.getElementById('cfgShowFooter').checked // Guardar la configuración del pie de página
+            };
+            localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(companySettings));
+            applyCompanySettingsToUI();
+            closeSettingsModal();
+            showToast('Configuración guardada correctamente.');
+        }
 
-function resetCompanySettings() {
-    companySettings = { ...DEFAULT_COMPANY_DATA };
-    localStorage.removeItem(STORAGE_KEYS.COMPANY);
-    applyCompanySettingsToUI();
-    openSettingsModal();
-    showToast('Valores restaurados.');
-}
+        function resetCompanySettings() {
+            companySettings = { ...DEFAULT_COMPANY_DATA };
+            localStorage.removeItem(STORAGE_KEYS.COMPANY);
+            applyCompanySettingsToUI();
+            openSettingsModal();
+            showToast('Valores restaurados.');
+        }
 
         // ==========================================
         // 8. UTILIDADES Y EVENTOS
@@ -1434,7 +1450,19 @@ function resetCompanySettings() {
 
         function printDocument() {
             if (document.activeElement) document.activeElement.blur();
+
+            const quoteNum = document.getElementById('metaNumber').value || 'Presupuesto';
+            const clientName = document.getElementById('clientName').value || 'Cliente';
+            const originalTitle = document.title;
+
+            // Limpia el nombre para que sea válido como nombre de archivo
+            const safeClientName = clientName.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, '').trim().replace(/\s+/g, '_');
+            document.title = `${quoteNum}_${safeClientName}`;
+
             window.print();
+
+            // Restaura el título original
+            setTimeout(() => { document.title = originalTitle; }, 1000);
         }
 
         function showToast(message) {
