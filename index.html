@@ -426,6 +426,10 @@
             .table-body-container::-webkit-scrollbar {
                 display: none !important;
             }
+
+            #clientNif::placeholder, #clientName::placeholder, #clientAddress::placeholder, #clientCity::placeholder {
+                color: transparent;
+            }
         }
     </style>
 </head>
@@ -957,12 +961,12 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
         // ==========================================
         // 2. FUNCIONES DE SEGURIDAD Y DOM (XSS FREE)
         // ==========================================
-        
+
         // CORRECCIÓN CRÍTICA 3: Se añade la función escapeHtml que faltaba
         function escapeHtml(text) {
             if (!text) return '';
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            return text.replace(/[&<>"']/g, function (m) { return map[m]; });
         }
 
         function addRow(desc = '', qty = '', price = '') {
@@ -1259,7 +1263,7 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
                 history.forEach((item, index) => {
                     const div = document.createElement('div');
                     div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
-                    
+
                     // Aquí se usa escapeHtml correctamente
                     div.innerHTML = `
                         <div class="flex-1 min-w-0">
@@ -1482,4 +1486,5 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
         });
     </script>
 </body>
+
 </html>
