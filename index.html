@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presupuesto Profesional - U.R.I Urgencias Reformas e Instalaciones</title>
+    <!-- CORRECCIÓN 1: Título actualizado a PresuApp -->
+    <title>PresuApp - Gestor de Presupuestos U.R.I</title>
     <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fuente Inter y Montserrat -->
@@ -404,21 +405,16 @@
                 background-color: transparent !important;
             }
 
-            /* ✅ CAMBIO CLAVE: La tabla mantiene altura mínima de 310px al imprimir */
             .items-wrapper {
                 min-height: 310px !important;
-                /* Antes era auto, ahora fuerza tamaño mínimo */
                 height: auto !important;
-                /* Pero puede crecer si hay muchos ítems */
                 max-height: none !important;
                 overflow: visible !important;
                 border: 1.5px solid var(--uri-orange);
             }
 
-            /* ✅ CAMBIO CLAVE: El cuerpo de la tabla también mantiene altura mínima */
             .table-body-container {
                 min-height: 270px !important;
-                /* Antes era auto, ahora fuerza tamaño mínimo */
                 overflow: visible !important;
                 flex: none;
             }
@@ -464,15 +460,14 @@
                     </svg>
                 </div>
                 <div class="leading-tight">
-                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">U.R.I URGENCIAS</h1>
-                    <p class="text-xs text-blue-200/80 font-medium">Formulario digital</p>
+                    <!-- CORRECCIÓN 2: Texto del encabezado actualizado -->
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">PresuApp</h1>
+                    <p class="text-xs text-blue-200/80 font-medium">Gestor de Presupuestos U.R.I</p>
                 </div>
             </div>
 
             <!-- Grupo de Acciones -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-
-                <!-- Acciones Secundarias (Estilo Ghost para reducir ruido) -->
                 <button onclick="openSettingsModal()"
                     class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-100 rounded-md hover:bg-white/10 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                     title="Configuración">
@@ -519,7 +514,6 @@
 
                 <div class="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
 
-                <!-- Acciones Primarias (Con peso visual real) -->
                 <button onclick="saveToHistory()"
                     class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-emerald-700 rounded-md hover:bg-emerald-600 shadow-sm transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#14284B] focus-visible:ring-emerald-500">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -542,6 +536,7 @@
             </div>
         </div>
     </header>
+
     <!-- CONTENEDOR A4 -->
     <main class="a4-scroll-wrapper">
         <div id="a4Page" class="a4-page">
@@ -585,19 +580,16 @@
                         PRESUPUESTO</h2>
                     <div
                         class="w-full box-border bg-[#F1F3F5] border border-slate-200/80 rounded-lg px-3.5 py-2 text-[12px] text-[#14284B] overflow-hidden">
-                        <!-- Cambiado grid-cols-2 por grid-cols-[1.7fr_1fr] para dar ~63% al nº y ~37% a la fecha -->
                         <div class="grid grid-cols-[1.7fr_1fr] gap-3 items-center mb-1.5">
                             <div class="flex items-center min-w-0 gap-1.5">
                                 <label for="metaNumber" class="font-bold whitespace-nowrap text-[#14284B]">Nº
                                     Presupuesto:</label>
-                                <!-- flex-1 permite que ocupe todo el espacio asignado por la columna -->
                                 <input type="text" id="metaNumber"
                                     class="auto-save editable-line flex-1 min-w-0 font-semibold text-center text-[12px] text-[#14284B]"
                                     aria-label="Número de Presupuesto">
                             </div>
                             <div class="flex items-center min-w-0 gap-1.5">
                                 <label for="metaDate" class="font-bold whitespace-nowrap text-[#14284B]">Fecha:</label>
-                                <!-- max-w-[85px] evita que el input se estire innecesariamente -->
                                 <input type="text" id="metaDate"
                                     class="auto-save editable-line flex-1 min-w-0 max-w-[85px] font-semibold text-center text-[12px] text-[#14284B]"
                                     aria-label="Fecha" placeholder="DD/MM/AAAA">
@@ -606,7 +598,6 @@
                         <div class="flex items-center justify-end gap-1.5 min-w-0">
                             <label for="metaValidity"
                                 class="font-bold whitespace-nowrap text-[#14284B]">Validez:</label>
-                            <!-- Reducido de w-12 a w-10, ya que solo contendrá 2 dígitos (ej: 15, 30) -->
                             <input type="number" id="metaValidity"
                                 class="auto-save editable-line w-10 min-w-0 font-semibold text-center text-[12px] text-[#14284B]"
                                 aria-label="Validez en días" value="15" min="1">
@@ -867,7 +858,6 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-gray-900 focus:border-[#E87A24] outline-none">
                 </div>
 
-                <!-- Sección mejorada para el interruptor del pie de página -->
                 <div class="pt-3 border-t border-slate-200">
                     <div class="flex items-center justify-between p-3 bg-[#F8FAFC] rounded-lg border border-slate-200">
                         <div class="flex items-center gap-3">
@@ -967,6 +957,14 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
         // ==========================================
         // 2. FUNCIONES DE SEGURIDAD Y DOM (XSS FREE)
         // ==========================================
+        
+        // CORRECCIÓN CRÍTICA 3: Se añade la función escapeHtml que faltaba
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
         function addRow(desc = '', qty = '', price = '') {
             const container = document.getElementById('itemsContainer');
             if (!container) return;
@@ -974,7 +972,6 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             const row = document.createElement('div');
             row.className = 'item-row';
 
-            // Celda 1: Descripción (Segura)
             const descDiv = document.createElement('div');
             descDiv.className = 'relative flex items-start';
 
@@ -989,13 +986,12 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             textarea.rows = 1;
             textarea.className = 'cell-textarea auto-save';
             textarea.placeholder = 'Concepto o descripción...';
-            textarea.value = desc; // Asignación segura contra XSS
+            textarea.value = desc;
             textarea.oninput = function () { autoResizeTextarea(this); triggerSave(); };
 
             descDiv.appendChild(delBtn);
             descDiv.appendChild(textarea);
 
-            // Celda 2: Cantidad
             const qtyDiv = document.createElement('div');
             qtyDiv.className = 'flex items-start justify-center';
             const qtyInput = document.createElement('input');
@@ -1008,7 +1004,6 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             qtyInput.oninput = function () { updateRowTotal(this); triggerSave(); };
             qtyDiv.appendChild(qtyInput);
 
-            // Celda 3: Precio
             const priceDiv = document.createElement('div');
             priceDiv.className = 'flex items-start justify-end';
             const priceInput = document.createElement('input');
@@ -1021,7 +1016,6 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             priceInput.oninput = function () { updateRowTotal(this); triggerSave(); };
             priceDiv.appendChild(priceInput);
 
-            // Celda 4: Total
             const totalDiv = document.createElement('div');
             totalDiv.className = 'flex items-start justify-end px-2 py-1 text-[12px] font-semibold text-gray-900 row-total';
             if (qty !== '' && price !== '') {
@@ -1223,7 +1217,6 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
             const quoteNumber = document.getElementById('metaNumber').value || 'Sin número';
             const total = document.getElementById('totalPresupuestoDisplay').textContent;
 
-            // Guardar estado actual antes de archivar
             saveDraft();
             const draftData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DRAFT));
 
@@ -1238,59 +1231,57 @@ Forma de pago: Transferencia bancaria o efectivo.</textarea>
 
             try {
                 const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
-                history.unshift(historyEntry); // Añadir al principio
+                history.unshift(historyEntry);
                 localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
 
-                // Limpiar borrador actual para empezar uno nuevo
                 localStorage.removeItem(STORAGE_KEYS.DRAFT);
                 showToast('Presupuesto guardado en el historial correctamente.');
 
-                // Generar nuevo número para el siguiente
                 document.getElementById('metaNumber').value = generateQuoteNumber();
-                clearAllData(true); // true = silent mode
+                clearAllData(true);
             } catch (e) {
                 showToast('Error al guardar en el historial.');
             }
         }
 
-function openHistoryModal() {
-    const modal = document.getElementById('historyModal');
-    const list = document.getElementById('historyList');
-    const emptyMsg = document.getElementById('emptyHistoryMsg');
+        function openHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            const list = document.getElementById('historyList');
+            const emptyMsg = document.getElementById('emptyHistoryMsg');
 
-    list.innerHTML = '';
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+            list.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
 
-    if (history.length === 0) {
-        emptyMsg.classList.remove('hidden');
-    } else {
-        emptyMsg.classList.add('hidden');
-        history.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
-            
-            // ✅ AQUÍ ESTÁ LA CORRECCIÓN: Usamos escapeHtml() en todo lo que escribió el usuario
-            div.innerHTML = `
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="font-bold text-[#14284B] text-sm">${escapeHtml(item.quoteNumber)}</span>
-                        <span class="text-xs text-slate-500">${escapeHtml(item.date)}</span>
-                    </div>
-                    <div class="text-sm text-gray-700 truncate">${escapeHtml(item.client)}</div>
-                    <div class="text-xs font-semibold text-[#E87A24] mt-1">${escapeHtml(item.total)}</div>
-                </div>
-                <div class="flex gap-2 ml-3">
-                    <button onclick="loadFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-white bg-[#14284B] hover:bg-[#1E3A6D] rounded transition">Cargar</button>
-                    <button onclick="deleteFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded transition">Eliminar</button>
-                </div>
-            `;
-            list.appendChild(div);
-        });
-    }
+            if (history.length === 0) {
+                emptyMsg.classList.remove('hidden');
+            } else {
+                emptyMsg.classList.add('hidden');
+                history.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-[#E87A24] transition';
+                    
+                    // Aquí se usa escapeHtml correctamente
+                    div.innerHTML = `
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-[#14284B] text-sm">${escapeHtml(item.quoteNumber)}</span>
+                                <span class="text-xs text-slate-500">${escapeHtml(item.date)}</span>
+                            </div>
+                            <div class="text-sm text-gray-700 truncate">${escapeHtml(item.client)}</div>
+                            <div class="text-xs font-semibold text-[#E87A24] mt-1">${escapeHtml(item.total)}</div>
+                        </div>
+                        <div class="flex gap-2 ml-3">
+                            <button onclick="loadFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-white bg-[#14284B] hover:bg-[#1E3A6D] rounded transition">Cargar</button>
+                            <button onclick="deleteFromHistory(${index})" class="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded transition">Eliminar</button>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+            }
 
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
 
         function closeHistoryModal() {
             const modal = document.getElementById('historyModal');
@@ -1303,7 +1294,6 @@ function openHistoryModal() {
             const item = history[index];
             if (!item) return;
 
-            // Restaurar datos
             localStorage.setItem(STORAGE_KEYS.DRAFT, JSON.stringify(item.data));
             loadDraft();
             closeHistoryModal();
@@ -1315,12 +1305,12 @@ function openHistoryModal() {
             const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
             history.splice(index, 1);
             localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
-            openHistoryModal(); // Re-renderizar
+            openHistoryModal();
             showToast('Presupuesto eliminado del historial.');
         }
 
         // ==========================================
-        // 7. CONFIGURACIÓN DE EMPRESA (Existente mejorada)
+        // 7. CONFIGURACIÓN DE EMPRESA
         // ==========================================
         function loadCompanySettings() {
             try {
@@ -1353,7 +1343,6 @@ function openHistoryModal() {
             if (footerSection) {
                 footerSection.style.display = companySettings.showFooter ? 'grid' : 'none';
             }
-
         }
 
         function openSettingsModal() {
@@ -1388,7 +1377,7 @@ function openHistoryModal() {
                 phone: getVal('cfgPhone'),
                 defaultIva: parseFloat(getVal('cfgDefaultIva')) || 0,
                 address: getVal('cfgAddress'),
-                showFooter: document.getElementById('cfgShowFooter').checked // Guardar la configuración del pie de página
+                showFooter: document.getElementById('cfgShowFooter').checked
             };
             localStorage.setItem(STORAGE_KEYS.COMPANY, JSON.stringify(companySettings));
             applyCompanySettingsToUI();
@@ -1455,13 +1444,11 @@ function openHistoryModal() {
             const clientName = document.getElementById('clientName').value || 'Cliente';
             const originalTitle = document.title;
 
-            // Limpia el nombre para que sea válido como nombre de archivo
             const safeClientName = clientName.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, '').trim().replace(/\s+/g, '_');
             document.title = `${quoteNum}_${safeClientName}`;
 
             window.print();
 
-            // Restaura el título original
             setTimeout(() => { document.title = originalTitle; }, 1000);
         }
 
@@ -1477,7 +1464,6 @@ function openHistoryModal() {
             loadCompanySettings();
             setTodayDate();
 
-            // Intentar cargar borrador, si no existe, iniciar limpio con número nuevo
             const hasDraft = loadDraft();
             if (!hasDraft) {
                 document.getElementById('metaNumber').value = generateQuoteNumber();
@@ -1488,7 +1474,6 @@ function openHistoryModal() {
                 calculateTotals();
             }
 
-            // Listeners globales para auto-guardado y validez
             document.querySelectorAll('.auto-save').forEach(el => {
                 el.addEventListener('input', triggerSave);
             });
@@ -1497,5 +1482,4 @@ function openHistoryModal() {
         });
     </script>
 </body>
-
 </html>
